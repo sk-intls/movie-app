@@ -3,6 +3,7 @@ import type { RootState, AppDispatch } from "./store/store";
 import { useEffect } from "react";
 import { fetchPopularMovies } from "./store/slices/moviesSlice";
 import Header from "./components/Header";
+import SearchBar from "./components/SearchBar";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,6 +20,7 @@ function App() {
   return (
     <>
       <Header />
+      <SearchBar />
       {popular.map((movie) => (
         <p key={movie.id}>{movie.title}</p>
       ))}

@@ -32,8 +32,32 @@ export const fetchPopularMovies = createAsyncThunk<Movie[], number>(
       });
       console.log("API Response:", response);
       return response.results;
-    } catch (error: any) {
-      return rejectWithValue(error.message || "Failed to fetch popular movies");
+    } catch (error: unknown) {
+      let message = "Failed to fetch popular movies";
+      if (error instanceof Error) {
+        message = error.message;
+      }
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const fetchSearchMovies = createAsyncThunk<
+  Movie[],
+  { query: string; page?: number },
+  { rejectValue: string }
+>(
+  "movies/fetchSearchMovies",
+  async ({ query, page = 1 }, { rejectWithValue }) => {
+    try {
+      const response = await tmdbApi.searchMovies(query, page);
+      return response.results;
+    } catch (error: unknown) {
+      let message = "Failed to fetch search results";
+      if (error instanceof Error) {
+        message = error.message;
+      }
+      return rejectWithValue(message);
     }
   }
 );
@@ -69,6 +93,18 @@ const movieSlice = createSlice({
         state.popular = action.payload;
       })
       .addCase(fetchPopularMovies.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchSearchMovies.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSearchMovies.fulfilled, (state, action) => {
+        state.loading = false;
+        state.searchResults = action.payload;
+      })
+      .addCase(fetchSearchMovies.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
