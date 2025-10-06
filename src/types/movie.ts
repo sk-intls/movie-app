@@ -1,4 +1,4 @@
-export interface Movie {
+export interface IMovie {
   id: number;
   title: string;
   overview: string;
@@ -19,7 +19,7 @@ export interface Genre {
   name: string;
 }
 
-export interface MovieDetails extends Movie {
+export interface MovieDetails extends IMovie {
   runtime: number | null;
   genres: Genre[];
   budget: number;

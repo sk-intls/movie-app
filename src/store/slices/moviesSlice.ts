@@ -3,13 +3,13 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { Movie } from "../../types/movie";
+import type { IMovie } from "../../types/movie";
 import tmdbApi from "../../services/tmdbApi";
 
 interface MoviesState {
-  popular: Movie[];
-  searchResults: Movie[];
-  currentMovie: Movie | null;
+  popular: IMovie[];
+  searchResults: IMovie[];
+  currentMovie: IMovie | null;
   loading: boolean;
   error: string | null;
 }
@@ -22,7 +22,7 @@ const initialState: MoviesState = {
   error: null,
 };
 
-export const fetchPopularMovies = createAsyncThunk<Movie[], number>(
+export const fetchPopularMovies = createAsyncThunk<IMovie[], number>(
   "movies/fetchPopularMovies",
   async (page = 1, { rejectWithValue }) => {
     try {
@@ -43,7 +43,7 @@ export const fetchPopularMovies = createAsyncThunk<Movie[], number>(
 );
 
 export const fetchSearchMovies = createAsyncThunk<
-  Movie[],
+  IMovie[],
   { query: string; page?: number },
   { rejectValue: string }
 >(
@@ -66,13 +66,13 @@ const movieSlice = createSlice({
   name: "movies",
   initialState,
   reducers: {
-    setPopular: (state, action: PayloadAction<Movie[]>) => {
+    setPopular: (state, action: PayloadAction<IMovie[]>) => {
       state.popular = action.payload;
     },
-    setSearchResults: (state, action: PayloadAction<Movie[]>) => {
+    setSearchResults: (state, action: PayloadAction<IMovie[]>) => {
       state.searchResults = action.payload;
     },
-    setCurrentMovie: (state, action: PayloadAction<Movie | null>) => {
+    setCurrentMovie: (state, action: PayloadAction<IMovie | null>) => {
       state.currentMovie = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {

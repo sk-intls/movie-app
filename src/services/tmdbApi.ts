@@ -1,6 +1,6 @@
 import axios from "axios";
 import { TMDB_BASE_URL, TMDB_API_KEY } from "../utils/constants";
-import type { Movie, MovieDetails, Genre } from "../types/movie";
+import type { IMovie, MovieDetails, Genre } from "../types/movie";
 import type { TMDBResponse } from "../types/api";
 
 const tmdbClient = axios.create({
@@ -14,8 +14,8 @@ export const tmdbApi = {
   searchMovies: async (
     query: string,
     page: number = 1
-  ): Promise<TMDBResponse<Movie>> => {
-    const response = await tmdbClient.get<TMDBResponse<Movie>>(
+  ): Promise<TMDBResponse<IMovie>> => {
+    const response = await tmdbClient.get<TMDBResponse<IMovie>>(
       "/search/movie",
       {
         params: { query, page },
@@ -42,8 +42,8 @@ export const tmdbApi = {
     year?: number;
     sortBy?: string;
     minRating?: number;
-  }): Promise<TMDBResponse<Movie>> => {
-    const response = await tmdbClient.get<TMDBResponse<Movie>>(
+  }): Promise<TMDBResponse<IMovie>> => {
+    const response = await tmdbClient.get<TMDBResponse<IMovie>>(
       "/discover/movie",
       {
         params: {
