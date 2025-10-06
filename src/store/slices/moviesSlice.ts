@@ -1,9 +1,13 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type { Movie } from "../../types/movie";
+import tmdbApi from "../../services/tmdbApi";
 
 interface MoviesState {
   popular: Movie[];
-  trending: Movie[];
   searchResults: Movie[];
   currentMovie: Movie | null;
   loading: boolean;
@@ -12,12 +16,27 @@ interface MoviesState {
 
 const initialState: MoviesState = {
   popular: [],
-  trending: [],
   searchResults: [],
   currentMovie: null,
   loading: false,
   error: null,
 };
+
+export const fetchPopularMovies = createAsyncThunk<Movie[], number>(
+  "movies/fetchPopularMovies",
+  async (page = 1, { rejectWithValue }) => {
+    try {
+      const response = await tmdbApi.discoverMovies({
+        page,
+        sortBy: "popularity.desc",
+      });
+      console.log("API Response:", response);
+      return response.results;
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Failed to fetch popular movies");
+    }
+  }
+);
 
 const movieSlice = createSlice({
   name: "movies",
@@ -25,9 +44,6 @@ const movieSlice = createSlice({
   reducers: {
     setPopular: (state, action: PayloadAction<Movie[]>) => {
       state.popular = action.payload;
-    },
-    setTrending: (state, action: PayloadAction<Movie[]>) => {
-      state.trending = action.payload;
     },
     setSearchResults: (state, action: PayloadAction<Movie[]>) => {
       state.searchResults = action.payload;
@@ -42,11 +58,25 @@ const movieSlice = createSlice({
       state.error = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPopularMovies.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPopularMovies.fulfilled, (state, action) => {
+        state.loading = false;
+        state.popular = action.payload;
+      })
+      .addCase(fetchPopularMovies.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
 });
 
 export const {
   setPopular,
-  setTrending,
   setSearchResults,
   setCurrentMovie,
   setLoading,
