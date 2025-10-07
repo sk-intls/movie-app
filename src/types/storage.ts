@@ -7,10 +7,16 @@ export interface BaseMovieItem {
 export interface Favorite extends BaseMovieItem {
   movieId: number;
   posterPath: string | null;
-  userRating: null;
+  userRating: number | null;
   notes: string;
   addedAt: string;
   updatedAt: string;
+  overview?: string;
+  vote_average?: number;
+  genre_ids?: number[];
+  release_date?: string;
+  original_title?: string;
+  popularity?: number;
 }
 
 export interface WatchlistItem extends BaseMovieItem {
