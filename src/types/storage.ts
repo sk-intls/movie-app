@@ -6,7 +6,6 @@ export interface BaseMovieItem {
 
 export interface Favorite extends BaseMovieItem {
   movieId: number;
-  title: string;
   posterPath: string | null;
   userRating: null;
   notes: string;

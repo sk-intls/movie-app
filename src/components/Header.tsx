@@ -3,19 +3,30 @@ import { useTheme } from "../context/ThemeContext";
 import { fetchPopularMovies } from "../store/slices/moviesSlice";
 import type { AppDispatch } from "../store/store";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 function Header() {
   const { theme, toggleTheme } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   return (
-    <header
-      className="flex p-8 cursor-pointer"
-      role="button"
-      onClick={() => dispatch(fetchPopularMovies(1))}
-    >
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-        Movies App
-      </h2>
+    <header className="flex p-8 cursor-pointer">
+      <div className="flex gap-2 items-center">
+        <Link
+          to="/"
+          className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight"
+          role="button"
+          onClick={() => dispatch(fetchPopularMovies(1))}
+        >
+          Movies App
+        </Link>
+        <Link
+          to="/favorites"
+          className="font-bold text-gray-900 dark:text-white tracking-tight"
+        >
+          Favorites
+        </Link>
+      </div>
+
       <button
         onClick={toggleTheme}
         className=" ml-auto p-2 rounded-full bg-gray-200 
