@@ -1,10 +1,18 @@
 import { SunIcon, MoonIcon } from "@heroicons/react/24/solid";
 import { useTheme } from "../context/ThemeContext";
+import { fetchPopularMovies } from "../store/slices/moviesSlice";
+import type { AppDispatch } from "../store/store";
+import { useDispatch } from "react-redux";
 
 function Header() {
   const { theme, toggleTheme } = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
   return (
-    <header className="flex p-8">
+    <header
+      className="flex p-8 cursor-pointer"
+      role="button"
+      onClick={() => dispatch(fetchPopularMovies(1))}
+    >
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
         Movies App
       </h2>
