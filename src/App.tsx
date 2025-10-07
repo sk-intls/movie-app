@@ -1,12 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "./store/store";
 import { useEffect } from "react";
-import { fetchPopularMovies } from "./store/slices/moviesSlice";
+import {
+  fetchPopularMovies,
+  fetchSearchMovies,
+} from "./store/slices/moviesSlice";
 import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import { Movie } from "./components/Movie";
 import type { IMovie } from "./types/movie";
 import { MovieSkeleton } from "./components/MovieSkeleton";
+import { Pagination } from "./components/Pagination";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +20,17 @@ function App() {
   useEffect(() => {
     dispatch(fetchPopularMovies(1));
   }, [dispatch]);
+
+  const handlePageChange = (page: number) => {
+    if (page === currentPage) return;
+    if (searchQuery.length > 0) {
+      dispatch(fetchSearchMovies({ query: searchQuery, page }));
+    } else {
+      dispatch(fetchPopularMovies(page));
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -53,6 +68,12 @@ function App() {
             <Movie movie={movie} key={movie.id} />
           ))}
         </div>
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
 
         {!loading && !error && movies.length === 0 && (
           <div className="text-center py-12">
