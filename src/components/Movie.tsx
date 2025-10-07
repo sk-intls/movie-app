@@ -1,6 +1,7 @@
 import type { IMovie } from "../types/movie";
 import { getImageUrl } from "../utils/constants";
 import { GENRE_MAP } from "../utils/constants";
+// import { HeartIcon } from "@heroicons/react/24/solid";
 
 export function Movie({ movie }: { movie: IMovie }) {
   const posterSize = window.innerWidth < 640 ? "small" : "medium";

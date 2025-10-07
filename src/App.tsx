@@ -6,19 +6,17 @@ import Header from "./components/Header";
 import SearchBar from "./components/SearchBar";
 import { Movie } from "./components/Movie";
 import type { IMovie } from "./types/movie";
+import { MovieSkeleton } from "./components/MovieSkeleton";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
-  const { popular, loading, error } = useSelector(
-    (state: RootState) => state.movies
-  );
+  const { movies, loading, error, currentPage, totalPages, searchQuery } =
+    useSelector((state: RootState) => state.movies);
 
   useEffect(() => {
-    dispatch(fetchPopularMovies(2));
+    dispatch(fetchPopularMovies(1));
   }, [dispatch]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
@@ -27,12 +25,44 @@ function App() {
       </div>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-        <div className="grid grid-cols-2 
-        sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-          {popular.map((movie: IMovie) => (
+        {error && (
+          <div
+            className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 
+                          rounded-lg p-4 text-red-800 dark:text-red-200"
+          >
+            <p className="font-semibold">Error loading movies</p>
+            <p className="text-sm">{error}</p>
+          </div>
+        )}
+
+        {loading && (
+          <div
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 
+                          lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+          >
+            {[...Array(12)].map((_, i) => (
+              <MovieSkeleton key={i} />
+            ))}
+          </div>
+        )}
+        <div
+          className="grid grid-cols-2 
+        sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+        >
+          {movies.map((movie: IMovie) => (
             <Movie movie={movie} key={movie.id} />
           ))}
         </div>
+
+        {!loading && !error && movies.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 dark:text-gray-400 text-lg">
+              {searchQuery
+                ? "No movies found for your search"
+                : "No movies available"}
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
