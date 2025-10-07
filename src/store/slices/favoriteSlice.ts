@@ -16,18 +16,18 @@ const favoriteSlice = createSlice({
   reducers: {
     addFavorite: (state, action: PayloadAction<Favorite>) => {
       const exists = state.items.some(
-        (f: Favorite) => f.movieId === action.payload.movieId
+        (f: Favorite) => f.movieId == action.payload.movieId
       );
       if (!exists) {
         state.items.push(action.payload);
         favoritesStorage.set(state.items);
       }
     },
-    removeFavorite: (state, action: PayloadAction<Favorite>) => {
-      const updated = state.items.filter(
-        (f: Favorite) => f.movieId === action.payload.movieId
+    removeFavorite: (state, action: PayloadAction<number>) => {
+      state.items = state.items.filter(
+        (f: Favorite) => f.movieId !== action.payload
       );
-      favoritesStorage.set(updated);
+      favoritesStorage.set(state.items);
     },
     updateFavorite: (
       state,

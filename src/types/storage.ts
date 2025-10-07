@@ -5,8 +5,11 @@ export interface BaseMovieItem {
 }
 
 export interface Favorite extends BaseMovieItem {
-  userRating: number | null;
-  notes: string | null;
+  movieId: number;
+  title: string;
+  posterPath: string | null;
+  userRating: null;
+  notes: string;
   addedAt: string;
   updatedAt: string;
 }
