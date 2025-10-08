@@ -1,5 +1,4 @@
 import type { IMovie } from "../types/movie";
-import type { Favorite } from "../types/storage";
 import { getImageUrl } from "../utils/constants";
 import { GENRE_MAP } from "../utils/constants";
 import { HeartIcon } from "@heroicons/react/24/solid";
@@ -7,37 +6,27 @@ import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addFavorite, removeFavorite } from "../store/slices/favoriteSlice";
 
-export function Movie({ movie }: { movie: IMovie | Favorite }) {
+export function Movie({ movie }: { movie: IMovie }) {
   const posterSize = window.innerWidth < 640 ? "small" : "medium";
-  const posterPath = 'poster_path' in movie ? movie.poster_path : movie.posterPath;
-  const movieId = 'id' in movie ? movie.id : movie.movieId;
-  const posterUrl = getImageUrl(posterPath, "poster", posterSize);
+  const posterUrl = getImageUrl(movie.poster_path, "poster", posterSize);
   const dispatch = useAppDispatch();
   const isFavorited = useAppSelector((state) =>
-    state.favorites.items.some((fav) => fav.movieId === movieId)
+    state.favorites.items.some((fav) => fav.movieId == movie.id)
   );
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isFavorited) {
-      dispatch(removeFavorite(movieId));
+      dispatch(removeFavorite(movie.id));
     } else {
       dispatch(
         addFavorite({
-          movieId: movieId,
+          movieId: movie.id,
           title: movie.title,
-          posterPath: posterPath,
+          posterPath: movie.poster_path,
           userRating: null,
           notes: "",
           addedAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          ...('overview' in movie && {
-            overview: movie.overview,
-            vote_average: movie.vote_average,
-            genre_ids: movie.genre_ids,
-            release_date: movie.release_date,
-            original_title: movie.original_title,
-            popularity: movie.popularity,
-          })
         })
       );
     }
@@ -53,7 +42,7 @@ export function Movie({ movie }: { movie: IMovie | Favorite }) {
       role="button"
       tabIndex={0}
       onKeyDown={(e) =>
-        e.key === "Enter" && console.log("Movie clicked:", movieId)
+        e.key === "Enter" && console.log("Movie clicked:", movie.id)
       }
       onClick={handleMovieClick}
     >
@@ -86,7 +75,7 @@ export function Movie({ movie }: { movie: IMovie | Favorite }) {
           className="absolute top-2 right-2 bg-yellow-400 text-gray-900 
                         text-xs font-bold px-2 py-1 rounded-full shadow-lg"
         >
-          ⭐ {('vote_average' in movie ? movie.vote_average : movie.vote_average || 0).toFixed(1)}
+          ⭐ {movie.vote_average.toFixed(1)}
         </div>
       </div>
       <div className="p-3">
@@ -97,11 +86,11 @@ export function Movie({ movie }: { movie: IMovie | Favorite }) {
           {movie.title}
         </h3>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 line-clamp-3">
-          {('overview' in movie ? movie.overview : movie.overview) || "No overview available."}
+          {movie.overview || "No overview available."}
         </p>
         <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
           Genres:{" "}
-          {('genre_ids' in movie ? movie.genre_ids : movie.genre_ids || []).map((id) => GENRE_MAP[id] || "Unknown").join(", ")}
+          {movie.genre_ids.map((id) => GENRE_MAP[id] || "Unknown").join(", ")}
         </p>
       </div>
     </div>

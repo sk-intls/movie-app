@@ -25,7 +25,7 @@ export interface WatchlistItem extends BaseMovieItem {
 
 export interface WatchedMovie extends BaseMovieItem {
   watchedAt: string;
-  userRating: string | null;
+  userRating: number | null;
   notes: string | null;
 }
 

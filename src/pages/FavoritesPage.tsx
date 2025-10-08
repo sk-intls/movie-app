@@ -1,4 +1,4 @@
-import { Movie } from "../components/Movie";
+import { SimpleMovieCard } from "../components/SimpleMovieCard";
 import { useAppSelector } from "../store/hooks";
 
 function FavoritesPage() {
@@ -27,7 +27,7 @@ function FavoritesPage() {
       
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
         {favorites.map((favorite) => (
-          <Movie key={favorite.movieId} movie={favorite} />
+          <SimpleMovieCard key={favorite.movieId} movie={favorite} />
         ))}
       </div>
     </main>

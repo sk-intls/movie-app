@@ -21,9 +21,21 @@ function Header() {
         </Link>
         <Link
           to="/favorites"
-          className="font-bold text-gray-900 dark:text-white tracking-tight"
+          className="font-bold text-gray-900 dark:text-white tracking-tight hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
         >
           Favorites
+        </Link>
+        <Link
+          to="/watchlist"
+          className="font-bold text-gray-900 dark:text-white tracking-tight hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+        >
+          Watchlist
+        </Link>
+        <Link
+          to="/watched"
+          className="font-bold text-gray-900 dark:text-white tracking-tight hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+        >
+          Watched
         </Link>
       </div>
 

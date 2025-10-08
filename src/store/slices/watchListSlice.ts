@@ -23,9 +23,9 @@ const watchListSlice = createSlice({
         watchListStorage.set(state.items);
       }
     },
-    removeFromWatchList: (state, action: PayloadAction<WatchlistItem>) => {
+    removeFromWatchList: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter(
-        (w: WatchlistItem) => w.movieId !== action.payload.movieId
+        (w: WatchlistItem) => w.movieId !== action.payload
       );
       watchListStorage.set(state.items);
     },
