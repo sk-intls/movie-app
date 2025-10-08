@@ -8,7 +8,7 @@ interface WatchedMoviesState {
 }
 
 const initialState: WatchedMoviesState = {
-  items: [],
+  items: watchedStorage.get(),
 };
 
 const watchedMoviesSlice = createSlice({

@@ -1,17 +1,36 @@
 import type { IMovie } from "../types/movie";
 import { getImageUrl } from "../utils/constants";
 import { GENRE_MAP } from "../utils/constants";
-import { HeartIcon } from "@heroicons/react/24/solid";
-import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
+import { HeartIcon, BookmarkIcon, EyeIcon } from "@heroicons/react/24/solid";
+import {
+  HeartIcon as HeartOutline,
+  BookmarkIcon as BookmarkOutline,
+  EyeSlashIcon,
+} from "@heroicons/react/24/outline";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addFavorite, removeFavorite } from "../store/slices/favoriteSlice";
+import {
+  addToWatchList,
+  removeFromWatchList,
+} from "../store/slices/watchListSlice";
+import {
+  markAsWatched,
+  markAsUnwatched,
+} from "../store/slices/watchedMoviesSlice";
+import ButtonIcon from "./ButtonIcon";
 
 export function Movie({ movie }: { movie: IMovie }) {
   const posterSize = window.innerWidth < 640 ? "small" : "medium";
   const posterUrl = getImageUrl(movie.poster_path, "poster", posterSize);
   const dispatch = useAppDispatch();
   const isFavorited = useAppSelector((state) =>
-    state.favorites.items.some((fav) => fav.movieId == movie.id)
+    state.favorites.items.some((fav) => fav.movieId === movie.id)
+  );
+  const isInWatchlist = useAppSelector((state) =>
+    state.watchList.items.some((item) => item.movieId === movie.id)
+  );
+  const isWatched = useAppSelector((state) =>
+    state.watchedMovies.items.some((item) => item.movieId === movie.id)
   );
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -27,6 +46,40 @@ export function Movie({ movie }: { movie: IMovie }) {
           notes: "",
           addedAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
+        })
+      );
+    }
+  };
+
+  const handleWatchlistClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isInWatchlist) {
+      dispatch(removeFromWatchList(movie.id));
+    } else {
+      dispatch(
+        addToWatchList({
+          movieId: movie.id,
+          title: movie.title,
+          posterPath: movie.poster_path,
+          addedAt: new Date().toISOString(),
+        })
+      );
+    }
+  };
+
+  const handleWatchedClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isWatched) {
+      dispatch(markAsUnwatched(movie.id));
+    } else {
+      dispatch(
+        markAsWatched({
+          movieId: movie.id,
+          title: movie.title,
+          posterPath: movie.poster_path,
+          watchedAt: new Date().toISOString(),
+          userRating: null,
+          notes: null,
         })
       );
     }
@@ -52,25 +105,33 @@ export function Movie({ movie }: { movie: IMovie }) {
           alt={`${movie.title} poster`}
           className="w-full h-64 object-cover"
         />
-        <button
-          onClick={handleFavoriteClick}
-          className="absolute top-2 left-2 p-2 rounded-full
-          bg-transparent border-0 outline-none ring-0
-          hover:bg-transparent hover:border-0 hover:outline-none hover:ring-0
-          focus:bg-transparent focus:border-0 focus:outline-none focus:ring-0
-          active:bg-transparent active:border-0 active:outline-none active:ring-0
-          active:scale-120 transition-transform duration-700 ease-out"
-          aria-label={
-            isFavorited ? "Remove from favorites" : "Add to favorites"
-          }
-          style={{ background: "transparent" }}
-        >
-          {isFavorited ? (
-            <HeartIcon className="h-5 w-5 text-white" />
-          ) : (
-            <HeartOutline className="h-5 w-5 text-white" />
-          )}
-        </button>
+        <ButtonIcon
+          isActive={isFavorited}
+          handleClick={handleFavoriteClick}
+          ActiveIcon={HeartIcon}
+          InactiveIcon={HeartOutline}
+          entity="favorites"
+          className="top-2"
+        />
+
+        <ButtonIcon
+          isActive={isInWatchlist}
+          handleClick={handleWatchlistClick}
+          ActiveIcon={BookmarkIcon}
+          InactiveIcon={BookmarkOutline}
+          entity="watchlist"
+          className="top-14"
+        />
+
+        <ButtonIcon
+          isActive={isWatched}
+          handleClick={handleWatchedClick}
+          ActiveIcon={EyeIcon}
+          InactiveIcon={EyeSlashIcon}
+          entity="watched"
+          className="top-[6.5rem]"
+        />
+
         <div
           className="absolute top-2 right-2 bg-yellow-400 text-gray-900 
                         text-xs font-bold px-2 py-1 rounded-full shadow-lg"
