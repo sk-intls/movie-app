@@ -41,9 +41,7 @@ function Header() {
 
       <button
         onClick={toggleTheme}
-        className=" ml-auto p-2 rounded-full bg-gray-200 
-        dark:bg-gray-700 text-gray-800 dark:text-gray-200 
-        hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        className="ml-auto p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors cursor-pointer"
       >
         {theme == "dark" ? (
           <SunIcon className="h-6 w-6" />

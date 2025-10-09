@@ -79,7 +79,7 @@ export function Pagination({
               className={`px-4 py-2 rounded-lg transition-colors
                 ${
                   currentPage === page
-                    ? "bg-blue-500 text-lightgrey-500 font-semibold border border-black-700"
+                    ? "bg-blue-500 dark:bg-blue-600 text-white font-semibold border border-blue-600 dark:border-blue-500"
                     : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700"
                 }`}
             >

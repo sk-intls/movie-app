@@ -23,7 +23,7 @@ function ButtonIcon({
           hover:bg-transparent hover:border-0 hover:outline-none hover:ring-0
           focus:bg-transparent focus:border-0 focus:outline-none focus:ring-0
           active:bg-transparent active:border-0 active:outline-none active:ring-0
-          active:scale-120 transition-transform duration-700 ease-out`}
+          active:scale-120 transition-transform duration-700 ease-out cursor-pointer`}
       aria-label={isActive ? `Remove from ${entity}` : `Add to ${entity}`}
     >
       {isActive ? (

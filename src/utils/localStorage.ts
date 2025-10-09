@@ -203,7 +203,7 @@ export const preferencesStorage = {
   },
   update: (updates: Partial<UserPreferences>): UserPreferences => {
     const current = preferencesStorage.get();
-    const updated = { ...current, updates };
+    const updated = { ...current, ...updates };
     preferencesStorage.set(updated);
     return updated;
   },
