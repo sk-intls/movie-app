@@ -24,7 +24,7 @@ export const tmdbApi = {
     return response.data;
   },
 
-  getMovieDetails: async (movieId: number): Promise<MovieDetails> => {
+  getMovieDetails: async (movieId: string |number): Promise<MovieDetails> => {
     const response = await tmdbClient.get<MovieDetails>(`/movie/${movieId}`);
     return response.data;
   },

@@ -18,6 +18,7 @@ import {
   markAsUnwatched,
 } from "../store/slices/watchedMoviesSlice";
 import ButtonIcon from "./ButtonIcon";
+import { useNavigate } from "react-router-dom";
 
 export function Movie({ movie }: { movie: IMovie }) {
   const posterSize = window.innerWidth < 640 ? "small" : "medium";
@@ -32,6 +33,7 @@ export function Movie({ movie }: { movie: IMovie }) {
   const isWatched = useAppSelector((state) =>
     state.watchedMovies.items.some((item) => item.movieId === movie.id)
   );
+  const navigate = useNavigate();
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isFavorited) {
@@ -84,8 +86,8 @@ export function Movie({ movie }: { movie: IMovie }) {
       );
     }
   };
-  const handleMovieClick = () => {
-    console.log("Movie clicked", movie.title);
+  const handleMovieClick = (id: number) => {
+    navigate(`/movie/${id}`);
   };
   return (
     <div
@@ -97,7 +99,7 @@ export function Movie({ movie }: { movie: IMovie }) {
       onKeyDown={(e) =>
         e.key === "Enter" && console.log("Movie clicked:", movie.id)
       }
-      onClick={handleMovieClick}
+      onClick={() => handleMovieClick(movie.id)}
     >
       <div className="relative aspect-[2/3] overflow-hidden">
         <img

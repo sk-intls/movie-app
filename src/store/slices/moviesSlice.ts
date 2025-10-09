@@ -49,8 +49,7 @@ export const fetchSearchMovies = createAsyncThunk<
   "movies/fetchSearchMovies",
   async ({ query, page = 1 }, { rejectWithValue }) => {
     try {
-      const response = await tmdbApi.searchMovies(query, page);
-      return response;
+      return await tmdbApi.searchMovies(query, page);
     } catch (error: unknown) {
       let message = "Failed to fetch search results";
       if (error instanceof Error) {

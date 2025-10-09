@@ -6,6 +6,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addFavorite, removeFavorite } from "../store/slices/favoriteSlice";
 import type { Favorite, WatchlistItem, WatchedMovie } from "../types/storage";
+import { useNavigate } from "react-router-dom";
 
 type SimpleMovieData = Favorite | WatchlistItem | WatchedMovie;
 
@@ -24,6 +25,7 @@ export function SimpleMovieCard({
   const posterUrl = getImageUrl(movie.posterPath, "poster", posterSize);
   
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isFavorited = useAppSelector((state) =>
     state.favorites.items.some((fav) => fav.movieId === movie.movieId)
   );
@@ -55,8 +57,7 @@ export function SimpleMovieCard({
   };
 
   const handleMovieClick = () => {
-    console.log("Movie clicked", movie.title);
-    // TODO: Navigate to movie details page
+    navigate(`/movie/${movie.movieId}`);
   };
 
   const isWatchedMovie = (movie: SimpleMovieData): movie is WatchedMovie => {
