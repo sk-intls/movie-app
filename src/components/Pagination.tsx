@@ -27,7 +27,7 @@ export function Pagination({
       return pages;
     }
 
-    if (currentPage >=4 && currentPage <= totalPages - 3) {
+    if (currentPage >= 4 && currentPage <= maxPages - 3) {
       pages.push(
         1,
         "...",
@@ -35,14 +35,16 @@ export function Pagination({
         currentPage,
         currentPage + 1,
         "...",
-        totalPages
+        maxPages
       );
-    } else if (currentPage === totalPages - 1) {
-      pages.push(1, "...", currentPage - 1, currentPage, totalPages);
-    } else if (currentPage === totalPages) {
-      pages.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
+    } else if (currentPage === maxPages - 2) {
+      pages.push(1, "...", maxPages - 2, maxPages - 1, maxPages);
+    } else if (currentPage === maxPages - 1) {
+      pages.push(1, "...", currentPage - 1, currentPage, maxPages);
+    } else if (currentPage === maxPages) {
+      pages.push(1, "...", maxPages - 2, maxPages - 1, maxPages);
     } else {
-      pages.push(1, 2, 3, 4, "...", totalPages);
+      pages.push(1, 2, 3, 4, "...", maxPages);
     }
 
     return pages;

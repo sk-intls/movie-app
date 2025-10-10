@@ -75,7 +75,7 @@ export const favoritesStorage = {
 
   remove: (movieId: number): Favorite[] => {
     const favorites = favoritesStorage.get();
-    const updated = favorites.filter((movie) => movie.movieId === movieId);
+    const updated = favorites.filter((movie) => movie.movieId !== movieId);
     favoritesStorage.set(updated);
     return updated;
   },
@@ -118,9 +118,9 @@ export const watchListStorage = {
 
   add: (item: WatchlistItem): WatchlistItem[] => {
     const watchList = watchListStorage.get();
-    const exists = watchList.some((item) => item.movieId === item.movieId);
+    const exists = watchList.some((existingItem) => existingItem.movieId === item.movieId);
     if (exists) {
-      console.warn("Movie already in favorites");
+      console.warn("Movie already in watchlist");
       return watchList;
     }
     const updated = [...watchList, item];
@@ -130,7 +130,7 @@ export const watchListStorage = {
 
   remove: (movieId: number): WatchlistItem[] => {
     const watchList = watchListStorage.get();
-    const updated = watchList.filter((movie) => movie.movieId === movieId);
+    const updated = watchList.filter((movie) => movie.movieId !== movieId);
     watchListStorage.set(updated);
     return updated;
   },
@@ -157,7 +157,7 @@ export const watchedStorage = {
     const allWatched = watchedStorage.get();
     const exists = allWatched.some((item) => item.movieId === watched.movieId);
     if (exists) {
-      console.warn("Movie already in favorites");
+      console.warn("Movie already in watched list");
       return allWatched;
     }
     const updated = [...allWatched, watched];
@@ -167,7 +167,7 @@ export const watchedStorage = {
 
   remove: (movieId: number): WatchedMovie[] => {
     const allWatched = watchedStorage.get();
-    const updated = allWatched.filter((movie) => movie.movieId === movieId);
+    const updated = allWatched.filter((movie) => movie.movieId !== movieId);
     watchedStorage.set(updated);
     return updated;
   },

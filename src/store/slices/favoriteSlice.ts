@@ -16,7 +16,7 @@ const favoriteSlice = createSlice({
   reducers: {
     addFavorite: (state, action: PayloadAction<Favorite>) => {
       const exists = state.items.some(
-        (f: Favorite) => f.movieId == action.payload.movieId
+        (f: Favorite) => f.movieId === action.payload.movieId
       );
       if (!exists) {
         state.items.push(action.payload);
@@ -36,7 +36,7 @@ const favoriteSlice = createSlice({
       const index = state.items.findIndex(
         (f: Favorite) => f.movieId === action.payload.movieId
       );
-      if (index != -1) {
+      if (index !== -1) {
         state.items[index] = {
           ...state.items[index],
           ...action.payload.updates,
